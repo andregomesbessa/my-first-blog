@@ -1,0 +1,31 @@
+#Criando ambiente VirtualEnv
+python3 -m venv myvenv
+source myvenv/bin/activate
+pip install django==1.8.5
+
+#Criar projeto Django
+django-admin startproject mysite .
+
+#Roda migrations
+python manage.py migrate
+
+#Rodar servidor
+python manage.py runserver
+
+#Criar uma nova aplicação no projeto Django
+python manage.py startapp blog
+
+#Criando as migratins para os models de blog 
+python manage.py makemigrations blog
+
+#Aplicando as migrations
+python manage.py migrate blog
+
+#Criando super usuário para entrar como Admin
+python manage.py createsuperuser
+
+#Configurando GIT
+$ git init
+Initialized empty Git repository in ~/djangogirls/.git/
+$ git config user.name "Your Name"
+$ git config user.email you@example.com
