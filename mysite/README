@@ -29,3 +29,38 @@ $ git init
 Initialized empty Git repository in ~/djangogirls/.git/
 $ git config user.name "Your Name"
 $ git config user.email you@example.com
+
+#Colando o git hub como repositório remoto de origem
+$ git remote add origin https://github.com/<your-github-username>/my-first-blog.git
+$ git push -u origin master
+
+#No console do servidor remoto
+    #Virtual Env
+    #Antes clone repositório github
+    cd my-first-blog
+    virtualenv --python=python3.4 myvenv
+    source myvenv/bin/activate
+    
+    #Whitenoite 
+    pip install django whitenoise #Gerenciar arquivos estáticos
+    python manage.py collectstatic
+
+    #Banco
+    python manage.py migrate
+    python manage.py createsuperuser
+    
+    #Adicionar uma nova web aplication
+    #Aponto a pasta do virtial env
+    #Edita o aquivo andrebessa_pythonanywhere_com_wsgi.py 
+    import os
+    import sys
+
+    path = '/home/<your-username>/my-first-blog'  # use your own username here
+    if path not in sys.path:
+        sys.path.append(path)
+
+    os.environ['DJANGO_SETTINGS_MODULE'] = 'mysite.settings'
+
+    from django.core.wsgi import get_wsgi_application
+    from whitenoise.django import DjangoWhiteNoise
+    application = DjangoWhiteNoise(get_wsgi_application())
