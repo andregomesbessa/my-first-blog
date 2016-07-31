@@ -64,3 +64,61 @@ $ git push -u origin master
     from django.core.wsgi import get_wsgi_application
     from whitenoise.django import DjangoWhiteNoise
     application = DjangoWhiteNoise(get_wsgi_application())
+
+#Voltando para o PC
+
+# Ajustando URLs
+# Adicionar em mysite/urls.py
+    url(r'', include('blog.urls')),
+
+# Criando o arquivo blog/urls.py e adicinando
+    from django.conf.urls import include, url
+    from . import views
+
+    urlpatterns = [
+        url(r'^$', views.post_list),
+    ]
+
+# Adicionar ao aquivo blog/views.py
+
+    def post_list(request):
+        return render(request, 'blog/post_list.html', {})
+
+#Crinado templates
+#Criando em blog as pastas templates/blog  
+#Dentro de blog/template/blog criar o arquivo post_list.html
+
+#ORM do Django
+    python manage.py shell
+
+    #Para acessar todos os Registros de Post
+    from blog.models import Post
+    Post.objects.all()
+
+    #Para inserir um novo registro em Post será necessário passar uma referência de usuários 
+    from django.contrib.auth.models import User
+    me = User.objects.get(username='andrebessa')
+    Post.objects.create(author=me, title='Sample title', text='Test')
+
+    #Filtrar um registro de Post por parâmetro
+    Post.objects.filter(author=me)
+
+    #Filtar por texto que contém uma determinada sub String "<parametro__contains>"
+    Post.objects.filter(title__contains='title')
+
+    #Filtrar por data
+    from django.utils import timezone
+    Post.objects.filter(published_date__lte=timezone.now()) []
+
+    #Invovando método de um objeto criado
+    post = Post.objects.get(id=1)
+    post.publish()
+
+    #Odenando saída
+    Post.objects.order_by('created_date')
+    Post.objects.order_by('-created_date')
+
+    #Sair
+    exit()
+
+#Queryset e carga dinâmica de informações
