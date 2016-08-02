@@ -122,3 +122,20 @@ $ git push -u origin master
     exit()
 
 #Queryset e carga dinâmica de informações
+
+
+
+#Django Rest Framework
+#Adcionar em setting.py, 
+
+INSTALLED_APPS = (
+    ...
+    'rest_framework',
+)
+
+#Adicionar em urls.py
+
+urlpatterns = [
+    ...
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+]
