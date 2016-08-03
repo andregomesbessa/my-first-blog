@@ -2,6 +2,7 @@
 python3 -m venv myvenv
 source myvenv/bin/activate
 pip install django==1.8.5
+pip install djangorestframework
 
 #Criar projeto Django
 django-admin startproject mysite .
@@ -126,16 +127,66 @@ $ git push -u origin master
 
 
 #Django Rest Framework
-#Adcionar em setting.py, 
+    
+    #Criando Serializers em blog/serializers.py
+    from django.contrib.auth.models import User, Group
+    from rest_framework import serializers
 
-INSTALLED_APPS = (
-    ...
-    'rest_framework',
-)
 
-#Adicionar em urls.py
+    class UserSerializer(serializers.HyperlinkedModelSerializer):
+        class Meta:
+            model = User
+            fields = ('url', 'username', 'email', 'groups')
 
-urlpatterns = [
-    ...
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
-]
+
+    class GroupSerializer(serializers.HyperlinkedModelSerializer):
+        class Meta:
+            model = Group
+            fields = ('url', 'name')
+
+    #Adicionar a blog/views.py
+    from django.contrib.auth.models import User, Group
+    from rest_framework import viewsets
+    from tutorial.quickstart.serializers import UserSerializer, GroupSerializer
+
+
+    class UserViewSet(viewsets.ModelViewSet):
+        """
+        API endpoint that allows users to be viewed or edited.
+        """
+        queryset = User.objects.all().order_by('-date_joined')
+        serializer_class = UserSerializer
+
+
+    class GroupViewSet(viewsets.ModelViewSet):
+        """
+        API endpoint that allows groups to be viewed or edited.
+        """
+        queryset = Group.objects.all()
+        serializer_class = GroupSerializer
+        
+    #Adcionar em setting.py, 
+    INSTALLED_APPS = (
+        ...
+        'rest_framework',
+    )
+
+    REST_FRAMEWORK = {
+        'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+        'PAGE_SIZE': 10
+    }
+
+    #Adicionar em urls.py
+    from rest_framework import routers
+    from blog import views
+
+    router = routers.DefaultRouter()
+    router.register(r'users', views.UserViewSet)
+    router.register(r'groups', views.GroupViewSet)
+
+    urlpatterns = [
+        ...
+        url(r'^', include(router.urls)),
+        url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    ]
+
