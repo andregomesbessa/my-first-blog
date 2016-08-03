@@ -4,7 +4,7 @@ from .models import Post
 
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
-from blog.serializers import UserSerializer, GroupSerializer
+from blog.serializers import UserSerializer, GroupSerializer, PostSerializer
 
 
 # Create your views here.
@@ -26,3 +26,10 @@ class GroupViewSet(viewsets.ModelViewSet):
     """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+
+class PostViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
