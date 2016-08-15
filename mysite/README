@@ -6,6 +6,7 @@ pip install djangorestframework
 
 #Criar projeto Django
 django-admin startproject mysite .
+cd mysite
 
 #Roda migrations
 python manage.py migrate
@@ -123,8 +124,6 @@ $ git push -u origin master
     exit()
 
 #Queryset e carga dinâmica de informações
-
-
 
 #Django Rest Framework
     
